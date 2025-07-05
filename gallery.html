@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Galleria - Portfolio</title>
+  <link rel="stylesheet" href="main.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Galleria-spesifit tyylit */
+    .gallery-section {
+      padding: 8rem 2rem 5rem;
+      min-height: 100vh;
+      background-color: #f8fafc;
+    }
+    
+    .gallery-title {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 3rem;
+      color: #1e293b;
+    }
+    
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    
+    .gallery-item {
+      position: relative;
+      aspect-ratio: 1;
+      border-radius: 15px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .gallery-item:hover {
+      transform: scale(1.05);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+    
+    .gallery-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.3);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .gallery-item:hover::before {
+      opacity: 1;
+    }
+    
+    .gallery-item-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: white;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .gallery-item:hover .gallery-item-content {
+      opacity: 1;
+    }
+    
+    .gallery-item-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    
+    .gallery-item-description {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+    
+    /* Eri koot grid-elementeille */
+    .gallery-item:nth-child(1) {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .gallery-item:nth-child(2) {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+    
+    .gallery-item:nth-child(3) {
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    }
+    
+    .gallery-item:nth-child(4) {
+      background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    }
+    
+    .gallery-item:nth-child(5) {
+      background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    }
+    
+    .gallery-item:nth-child(6) {
+      background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    }
+    
+    .gallery-item:nth-child(7) {
+      background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+    }
+    
+    .gallery-item:nth-child(8) {
+      background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%);
+    }
+    
+    .gallery-item:nth-child(9) {
+      background: linear-gradient(135deg, #fad0c4 0%, #ffd1ff 100%);
+    }
+    
+    /* Responsiivinen suunnittelu */
+    @media (max-width: 768px) {
+      .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+      
+      .gallery-title {
+        font-size: 2rem;
+      }
+      
+      .gallery-section {
+        padding: 6rem 1rem 3rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .gallery-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .gallery-title {
+        font-size: 1.8rem;
+      }
+    }
+    
+    /* Tumma teema */
+    body.dark-mode .gallery-section {
+      background-color: #0f172a;
+    }
+    
+    body.dark-mode .gallery-title {
+      color: #e2e8f0;
+    }
+    
+    /* Galleria modaali */
+    .gallery-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+    
+    .gallery-modal.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+    .gallery-modal-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      max-width: 600px;
+      width: 90%;
+      position: relative;
+      animation: modalSlideIn 0.3s ease;
+    }
+    
+    body.dark-mode .gallery-modal-content {
+      background-color: #1e293b;
+      color: #e2e8f0;
+    }
+    
+    .gallery-modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1.5rem;
+      font-size: 2rem;
+      cursor: pointer;
+      color: #64748b;
+      transition: color 0.3s ease;
+    }
+    
+    .gallery-modal-close:hover {
+      color: #ef4444;
+    }
+    
+    .gallery-modal-title {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: #1e293b;
+    }
+    
+    body.dark-mode .gallery-modal-title {
+      color: #e2e8f0;
+    }
+    
+    .gallery-modal-description {
+      line-height: 1.6;
+      color: #64748b;
+    }
+    
+    body.dark-mode .gallery-modal-description {
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="navbar" aria-label="Päävalikko">
+      <div class="logo">Portfolio</div>
+      <ul class="nav-links">
+        <li><a href="index.html">Etusivu</a></li>
+        <li><a href="index.html#about">Tietoa</a></li>
+        <li><a href="index.html#projects">Projektit</a></li>
+        <li><a href="gallery.html" class="active">Galleria</a></li>
+        <li><a href="index.html#contact">Yhteystiedot</a></li>
+      </ul>
+      <button id="theme-toggle" aria-label="Vaihda teema">🌙</button>
+      <button class="menu-toggle" aria-label="Avaa valikko">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- 9-kuvainen ruudukkogalleria CSS Grid -tekniikalla -->
+    <section class="gallery-section">
+      <div class="container">
+        <h1 class="gallery-title">Projektien Galleria</h1>
+        <div class="gallery-grid">
+          <div class="gallery-item" onclick="openGalleryModal('item1')">
+            <div class="gallery-item-content">
+              <div class="gallery-item-title">Verkkokauppa</div>
+              <div class="gallery-item-description">E-commerce ratkaisu</div>
+            </div>
+          </div>
+          
+          <div class="gallery-item" onclick="openGalleryModal('item2')">
+            <div class="gallery-item-content">
+              <div class="gallery-item-title">Portfolio</div>
+              <div class="gallery-item-description">Henkilökohtainen sivusto</div>
+            </div>
+          </div>
+          
+          <div class="gallery-item" onclick="openGalleryModal('item3')">
+            <div class="gallery-item-content">
+              <div class="gallery-item-title">Mobiilisovellus</div>
+              <div class="gallery-item-description">React Native app</div>
+            </div>
+          </div>
+          
+          <div class="gallery-item" onclick="openGalleryModal('item4')">
+            <div class="gallery-item-content">
+              <div class="gallery-item-title">Dashboard</div>
+              <div class="gallery-item-description">Admin-paneeli</div>
+            </div>
+          </div>
+          
+          <div class="gallery-item" onclick="openGalleryModal('item5')">
+            <div class="gallery-item-content">
+              <div class="gallery-item-title">Landing Page</div>
+              <div class="gallery-item-description">Yrityksen kotisivu</div>
+            </div>
+          </div>
+          
+          <div class="gallery-item" onclick="openGalleryModal('item6')">
+            <div class="gallery-item-content">
+              <div class="gallery-item-title">Blog-alusta</div>
+              <div class="gallery-item-description">CMS-järjestelmä</div>
+            </div>
+          </div>
+          
+          <div class="gallery-item" onclick="openGalleryModal('item7')">
+            <div class="gallery-item-content">
+              <div class="gallery-item-title">API-palvelu</div>
+              <div class="gallery-item-description">RESTful backend</div>
+            </div>
+          </div>
+          
+          <div class="gallery-item" onclick="openGalleryModal('item8')">
+            <div class="gallery-item-content">
+              <div class="gallery-item-title">Chat-sovellus</div>
+              <div class="gallery-item-description">Reaaliaikainen viestintä</div>
+            </div>
+          </div>
+          
+          <div class="gallery-item" onclick="openGalleryModal('item9')">
+            <div class="gallery-item-content">
+              <div class="gallery-item-title">Pelimoottori</div>
+              <div class="gallery-item-description">JavaScript-pohjainen</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Galleria modaali -->
+  <div id="gallery-modal" class="gallery-modal hidden" aria-modal="true" role="dialog">
+    <div class="gallery-modal-content">
+      <span onclick="closeGalleryModal()" class="gallery-modal-close" aria-label="Sulje">&times;</span>
+      <div id="gallery-modal-body">
+        <h3 class="gallery-modal-title">Projektin nimi</h3>
+        <p class="gallery-modal-description">Projektin kuvaus tulee tähän.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Takaisin ylös -painike -->
+  <button id="backToTop" aria-label="Takaisin ylös">⬆</button>
+
+  <script src="script.js"></script>
+  <script>
+    // Galleria-spesifit funktiot
+    const galleryModal = document.getElementById('gallery-modal');
+    
+    const galleryData = {
+      item1: {
+        title: 'Verkkokauppa',
+        description: 'Moderni verkkokauppa-alusta, joka on rakennettu React.js:llä ja Node.js:llä. Sisältää ostoskorin, maksujärjestelmän, tuotehallinnon ja admin-paneelin. Käyttää MongoDB-tietokantaa ja Stripe-maksujärjestelmää.'
+      },
+      item2: {
+        title: 'Portfolio-sivusto',
+        description: 'Responsiivinen portfolio-sivusto HTML5, CSS3 ja JavaScript teknologioilla. Sisältää animaatiot, teeman vaihtajan, modaaleja ja täysin responsiivisen suunnittelun. Optimoitu hakukoneille ja saavutettavuudelle.'
+      },
+      item3: {
+        title: 'Mobiilisovellus',
+        description: 'Cross-platform mobiilisovellus React Native:llä. Sisältää käyttäjäautentikoinnin, reaaliaikaisen datan, push-notifikaatiot ja offline-toiminnallisuuden. Julkaistu sekä iOS että Android -alustoille.'
+      },
+      item4: {
+        title: 'Admin Dashboard',
+        description: 'Kattava admin-paneeli Vue.js:llä ja Express.js:llä. Sisältää käyttäjähallinnan, analytiikan, raportoinnin ja reaaliaikaisia tilastoja. Käyttää Chart.js-kirjastoa visualisointeihin.'
+      },
+      item5: {
+        title: 'Landing Page',
+        description: 'Korkean konversion landing page startup-yritykselle. Optimoitu hakukoneille, nopea latausaika ja täysin responsiivinen. Sisältää A/B-testauksen ja analytiikan seurannan.'
+      },
+      item6: {
+        title: 'Blog-alusta',
+        description: 'Täysimittainen blog-alusta ja CMS-järjestelmä. Rakennettu Next.js:llä ja Sanity CMS:llä. Sisältää kommentointijärjestelmän, hakutoiminnon ja sosiaalisen median integraation.'
+      },
+      item7: {
+        title: 'API-palvelu',
+        description: 'RESTful API-palvelu Node.js:llä ja Express.js:llä. Sisältää autentikoinnin, tietokannan hallinnan, dokumentaation ja testauksen. Käyttää PostgreSQL-tietokantaa ja Redis-välimuistia.'
+      },
+      item8: {
+        title: 'Chat-sovellus',
+        description: 'Reaaliaikainen chat-sovellus Socket.io:lla ja React.js:llä. Sisältää ryhmäkeskustelut, yksityisviestit, tiedostojen jakamisen ja emoji-tuen. Tukee useita samanaikaisia käyttäjiä.'
+      },
+      item9: {
+        title: 'Pelimoottori',
+        description: 'JavaScript-pohjainen 2D-pelimoottori HTML5 Canvas:lla. Sisältää fysiikkasimulaation, ääniefektit, animaatiot ja törmäyksentunnistuksen. Optimoitu suorituskyvylle ja modulaarisuudelle.'
+      }
+    };
+    
+    function openGalleryModal(itemId) {
+      const data = galleryData[itemId];
+      if (data) {
+        const modalBody = document.getElementById('gallery-modal-body');
+        modalBody.innerHTML = `
+          <h3 class="gallery-modal-title">${data.title}</h3>
+          <p class="gallery-modal-description">${data.description}</p>
+        `;
+        
+        galleryModal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+    
+    function closeGalleryModal() {
+      galleryModal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+    
+    // Sulje modaali kun klikataan taustaa
+    galleryModal.addEventListener('click', (event) => {
+      if (event.target === galleryModal) {
+        closeGalleryModal();
+      }
+    });
+    
+    // Sulje modaali ESC-näppäimellä
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !galleryModal.classList.contains('hidden')) {
+        closeGalleryModal();
+      }
+    });
+    
+    // Globaalit funktiot
+    window.openGalleryModal = openGalleryModal;
+    window.closeGalleryModal = closeGalleryModal;
+  </script>
+</body>
+</html>

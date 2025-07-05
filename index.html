@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oma Portfolio</title>
+  <link rel="stylesheet" href="main.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <nav class="navbar" aria-label="Päävalikko">
+      <div class="logo">Portfolio</div>
+      <ul class="nav-links">
+        <li><a href="#hero" aria-label="Siirry etusivulle">Etusivu</a></li>
+        <li><a href="#about">Tietoa</a></li>
+        <li><a href="#projects">Projektit</a></li>
+        <li><a href="gallery.html">Galleria</a></li>
+        <li><a href="#contact">Yhteystiedot</a></li>
+      </ul>
+      <button id="theme-toggle" aria-label="Vaihda teema">🌙</button>
+      <button class="menu-toggle" aria-label="Avaa valikko">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero-osio taustakuvalla -->
+    <section id="hero" class="hero-section">
+      <div class="hero-content">
+        <h1>Tervetuloa Portfoliooni</h1>
+        <p>Olen intohimoinen web-kehittäjä ja suunnittelija</p>
+        <a href="#about" class="cta-button">Tutustu työhöni</a>
+      </div>
+    </section>
+
+    <!-- Tieto-osio kuvalla ja tekstillä -->
+    <section id="about" class="about-section">
+      <div class="container">
+        <div class="about-content">
+          <div class="about-image">
+            <img src="images/profiili.jpg" alt="Profiilikuva" class="profile-img" />
+          </div>
+          <div class="about-text">
+            <h2>Tietoa minusta</h2>
+            <p>Hei! Olen luova ja intohimoinen web-kehittäjä, joka rakastaa rakentaa responsiivisia ja esteettisiä verkkosivuja. Hallitsen HTML:n, CSS:n ja JavaScriptin, ja pyrin aina tekemään selkeitä ja käyttäjäystävällisiä ratkaisuja.</p>
+            <p>Olen kiinnostunut jatkuvasta oppimisesta ja uusien teknologioiden hyödyntämisestä projekteissani. Tavoitteenani on luoda digitaalisia kokemuksia, jotka ovat sekä toimivia että visuaalisesti miellyttäviä.</p>
+            <div class="skills">
+              <span class="skill-tag">HTML5</span>
+              <span class="skill-tag">CSS3</span>
+              <span class="skill-tag">JavaScript</span>
+              <span class="skill-tag">Responsive Design</span>
+              <span class="skill-tag">UI/UX</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projektiosio laatikoilla/korteilla -->
+    <section id="projects" class="projects-section">
+      <div class="container">
+        <h2>Projektini</h2>
+        <div class="project-cards">
+          <div class="card" onclick="openModal('project1')" data-title="Verkkokauppa" data-description="Moderni verkkokauppa React.js:llä ja Node.js:llä. Sisältää ostoskorin, maksujärjestelmän ja admin-paneelin.">
+            <div class="card-image"></div>
+            <div class="card-content">
+              <h3>Verkkokauppa</h3>
+              <p>React.js & Node.js</p>
+            </div>
+          </div>
+          <div class="card" onclick="openModal('project2')" data-title="Portfolio-sivusto" data-description="Responsiivinen portfolio-sivusto HTML5, CSS3 ja JavaScript teknologioilla. Sisältää animaatiot ja teeman vaihtajan.">
+            <div class="card-image"></div>
+            <div class="card-content">
+              <h3>Portfolio-sivusto</h3>
+              <p>HTML5, CSS3, JavaScript</p>
+            </div>
+          </div>
+          <div class="card" onclick="openModal('project3')" data-title="Mobiilisovellus" data-description="Cross-platform mobiilisovellus React Native:llä. Sisältää käyttäjäautentikoinnin ja reaaliaikaisen datan.">
+            <div class="card-image"></div>
+            <div class="card-content">
+              <h3>Mobiilisovellus</h3>
+              <p>React Native</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modaali-ikkuna -->
+  <div id="modal" class="modal hidden" aria-modal="true" role="dialog">
+    <div class="modal-content">
+      <span onclick="closeModal()" class="close" aria-label="Sulje">&times;</span>
+      <div id="modal-body">
+        <p>Tähän tulee projektin tarkempi kuvaus.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Takaisin ylös -painike -->
+  <button id="backToTop" aria-label="Takaisin ylös">⬆</button>
+
+  <!-- Yhteydenottolomake footerissa -->
+  <footer id="contact">
+    <div class="container">
+      <h3>Ota yhteyttä</h3>
+      <form id="contact-form">
+        <div class="form-group">
+          <label for="name">Nimi</label>
+          <input id="name" type="text" placeholder="Nimi" required />
+        </div>
+        <div class="form-group">
+          <label for="email">Sähköposti</label>
+          <input id="email" type="email" placeholder="Sähköposti" required />
+        </div>
+        <div class="form-group">
+          <label for="message">Viesti</label>
+          <textarea id="message" placeholder="Viesti" required></textarea>
+        </div>
+        <button type="submit">Lähetä</button>
+      </form>
+      <div class="footer-info">
+        <p>&copy; 2025 Portfolio. Kaikki oikeudet pidätetään.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
